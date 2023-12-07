@@ -9,10 +9,19 @@ function Keyboard({ guessList }) {
     ["Z", "X", "C", "V", "B", "N", "M"],
   ];
 
+  if (guessList.length === 0 && Object.keys(guessStatusMap).length > 0) {
+    setGuessStatusMap({});
+  }
+
+  const statusConfig = {
+    incorrect: 0,
+    misplaced: 1,
+    correct: 2 
+  }
   const latestGuess = guessList.slice(-1)[0];
 
   latestGuess?.forEach(({ letter, status }) => {
-    if (!guessStatusMap[letter]) {
+    if (!guessStatusMap[letter] || statusConfig[status] > statusConfig[guessStatusMap[letter]]) {
       setGuessStatusMap({
         ...guessStatusMap,
         [letter]: status,
